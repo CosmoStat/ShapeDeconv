@@ -1,0 +1,334 @@
+DeconvNet
+DeconvNet
+DeconvNet
+UNet2D_FCS_sc2_layer2x2_relu_filt32_resNet
+UNet2D_FCS_sc2_layer2x2_relu_filt8_resNet
+UNet2D_FCS_sc2_layer2x2_relu_filt8_resNet
+UNet2D_FCS_sc2_layer2x2_relu_filt8_resNet
+UNet2D_FCS_sc2_layer2x2_relu_filt8_resNet
+UNet2D_FCS_sc2_layer2x2_relu_filt8_resNet
+DeconvNetRef_FCS
+2019-01-08_10:26:08 - Epoch: 1, val_loss: 0.001599, loss: 0.057137
+DeconvNetRef_FCS
+2019-01-08_10:50:24 - Epoch: 2, val_loss: 0.001073, loss: 0.001216
+DeconvNetRef_FCS
+DeconvNetRef_FCS
+DeconvNetRef_FCS
+DeconvNetRef_FCS
+2019-01-09_12:15:41 - Epoch: 1, val_loss: 0.000307, loss: 0.000697
+2019-01-09_13:14:43 - Epoch: 2, val_loss: 0.000304, loss: 0.000242
+2019-01-09_14:13:41 - Epoch: 3, val_loss: 0.000231, loss: 0.000223
+2019-01-09_15:12:41 - Epoch: 4, val_loss: 0.000211, loss: 0.000216
+2019-01-09_16:11:42 - Epoch: 5, val_loss: 0.000210, loss: 0.000213
+2019-01-09_17:10:41 - Epoch: 6, val_loss: 0.000219, loss: 0.000212
+2019-01-09_18:09:24 - Epoch: 7, val_loss: 0.000209, loss: 0.000211
+2019-01-09_19:08:01 - Epoch: 8, val_loss: 0.000210, loss: 0.000210
+2019-01-09_20:06:36 - Epoch: 9, val_loss: 0.000214, loss: 0.000209
+2019-01-09_21:05:10 - Epoch: 10, val_loss: 0.000206, loss: 0.000208
+2019-01-09_22:03:44 - Epoch: 11, val_loss: 0.000207, loss: 0.000209
+2019-01-09_23:02:17 - Epoch: 12, val_loss: 0.000209, loss: 0.000207
+2019-01-10_00:00:50 - Epoch: 13, val_loss: 0.000206, loss: 0.000207
+2019-01-10_00:59:27 - Epoch: 14, val_loss: 0.000208, loss: 0.000207
+2019-01-10_01:58:00 - Epoch: 15, val_loss: 0.000209, loss: 0.000206
+2019-01-10_02:56:34 - Epoch: 16, val_loss: 0.000205, loss: 0.000206
+2019-01-10_03:55:09 - Epoch: 17, val_loss: 0.000204, loss: 0.000206
+2019-01-10_04:53:42 - Epoch: 18, val_loss: 0.000207, loss: 0.000206
+2019-01-10_05:52:17 - Epoch: 19, val_loss: 0.000204, loss: 0.000206
+2019-01-10_06:50:50 - Epoch: 20, val_loss: 0.000207, loss: 0.000205
+UNet2D_FCS_sc2_layer2x2_relu_filt8_resNet
+2019-01-10_15:48:37 - Epoch: 1, val_loss: 0.001527, loss: 0.012597
+2019-01-10_15:54:39 - Epoch: 2, val_loss: 0.000863, loss: 0.001052
+2019-01-10_16:05:57 - Epoch: 3, val_loss: 0.000631, loss: 0.000720
+2019-01-10_16:11:25 - Epoch: 4, val_loss: 0.000515, loss: 0.000566
+UNet2D_FCS_sc2_layer2x2_relu_filt8_resNet
+2019-01-10_16:59:01 - Epoch: 1, val_loss: 0.000241, loss: 0.000343
+2019-01-10_17:19:01 - Epoch: 2, val_loss: 0.000192, loss: 0.000219
+2019-01-10_17:38:33 - Epoch: 3, val_loss: 0.000183, loss: 0.000191
+2019-01-10_17:57:38 - Epoch: 4, val_loss: 0.000195, loss: 0.000183
+2019-01-10_18:15:55 - Epoch: 5, val_loss: 0.000177, loss: 0.000180
+2019-01-10_18:33:53 - Epoch: 6, val_loss: 0.000179, loss: 0.000178
+2019-01-10_18:51:39 - Epoch: 7, val_loss: 0.000175, loss: 0.000176
+2019-01-10_19:09:26 - Epoch: 8, val_loss: 0.000174, loss: 0.000175
+2019-01-10_19:27:06 - Epoch: 9, val_loss: 0.000173, loss: 0.000175
+2019-01-10_19:44:37 - Epoch: 10, val_loss: 0.000174, loss: 0.000174
+2019-01-10_20:02:08 - Epoch: 11, val_loss: 0.000178, loss: 0.000174
+2019-01-10_20:19:42 - Epoch: 12, val_loss: 0.000181, loss: 0.000173
+2019-01-10_20:37:10 - Epoch: 13, val_loss: 0.000174, loss: 0.000173
+2019-01-10_20:54:36 - Epoch: 14, val_loss: 0.000172, loss: 0.000173
+2019-01-10_21:12:10 - Epoch: 15, val_loss: 0.000174, loss: 0.000172
+2019-01-10_21:29:41 - Epoch: 16, val_loss: 0.000172, loss: 0.000172
+2019-01-10_21:47:12 - Epoch: 17, val_loss: 0.000172, loss: 0.000172
+2019-01-10_22:04:39 - Epoch: 18, val_loss: 0.000173, loss: 0.000172
+2019-01-10_22:22:19 - Epoch: 19, val_loss: 0.000172, loss: 0.000172
+2019-01-10_22:39:59 - Epoch: 20, val_loss: 0.000171, loss: 0.000171
+UNet2D_FCS_sc3_layer4x4x4_relu_filt16_resNet
+2019-01-11_16:11:34 - Epoch: 1, val_loss: 0.000239, loss: 0.000831
+2019-01-11_16:36:23 - Epoch: 2, val_loss: 0.000185, loss: 0.000206
+2019-01-11_17:01:46 - Epoch: 3, val_loss: 0.000175, loss: 0.000181
+2019-01-11_17:26:13 - Epoch: 4, val_loss: 0.000172, loss: 0.000174
+2019-01-11_17:50:26 - Epoch: 5, val_loss: 0.000169, loss: 0.000171
+2019-01-11_18:13:48 - Epoch: 6, val_loss: 0.000171, loss: 0.000169
+2019-01-11_18:36:41 - Epoch: 7, val_loss: 0.000171, loss: 0.000169
+2019-01-11_18:59:37 - Epoch: 8, val_loss: 0.000174, loss: 0.000168
+2019-01-11_19:22:12 - Epoch: 9, val_loss: 0.000167, loss: 0.000168
+2019-01-11_19:42:55 - Epoch: 10, val_loss: 0.000177, loss: 0.000167
+2019-01-11_20:03:51 - Epoch: 11, val_loss: 0.000171, loss: 0.000167
+2019-01-11_20:24:33 - Epoch: 12, val_loss: 0.000166, loss: 0.000166
+2019-01-11_20:45:09 - Epoch: 13, val_loss: 0.000167, loss: 0.000166
+2019-01-11_21:05:35 - Epoch: 14, val_loss: 0.000166, loss: 0.000166
+2019-01-11_21:26:17 - Epoch: 15, val_loss: 0.000165, loss: 0.000166
+2019-01-11_21:46:52 - Epoch: 16, val_loss: 0.000166, loss: 0.000165
+2019-01-11_22:07:38 - Epoch: 17, val_loss: 0.000166, loss: 0.000165
+2019-01-11_22:28:53 - Epoch: 18, val_loss: 0.000171, loss: 0.000165
+2019-01-11_22:49:43 - Epoch: 19, val_loss: 0.000236, loss: 0.000165
+2019-01-11_23:10:00 - Epoch: 20, val_loss: 0.000166, loss: 0.000165
+UNet2D_FCS_sc3_layer4x4x4_relu_filt16_resNet
+UNet2D_FCS_sc3_layer4x4x4_relu_filt16_resNet
+UNet2D_FCS_sc3_layer4x4x4_relu_filt16_resNet
+2019-01-18_13:05:50 - Epoch: 1, val_loss: 0.000316, loss: 0.001056
+2019-01-18_13:40:20 - Epoch: 2, val_loss: 0.000244, loss: 0.000295
+2019-01-18_14:12:58 - Epoch: 3, val_loss: 0.000232, loss: 0.000247
+2019-01-18_14:47:35 - Epoch: 4, val_loss: 0.000219, loss: 0.000231
+2019-01-18_15:20:16 - Epoch: 5, val_loss: 0.000217, loss: 0.000224
+2019-01-18_15:53:18 - Epoch: 6, val_loss: 0.000214, loss: 0.000221
+2019-01-18_16:26:56 - Epoch: 7, val_loss: 0.000214, loss: 0.000218
+2019-01-18_17:00:17 - Epoch: 8, val_loss: 0.000220, loss: 0.000216
+2019-01-18_17:32:41 - Epoch: 9, val_loss: 0.000220, loss: 0.000215
+2019-01-18_18:08:03 - Epoch: 10, val_loss: 0.000211, loss: 0.000213
+2019-01-18_18:38:08 - Epoch: 11, val_loss: 0.000212, loss: 0.000213
+2019-01-18_19:09:53 - Epoch: 12, val_loss: 0.000211, loss: 0.000212
+2019-01-18_19:40:24 - Epoch: 13, val_loss: 0.000209, loss: 0.000211
+2019-01-18_20:12:27 - Epoch: 14, val_loss: 0.000209, loss: 0.000211
+2019-01-18_20:45:31 - Epoch: 15, val_loss: 0.000211, loss: 0.000210
+2019-01-18_21:15:08 - Epoch: 16, val_loss: 0.000211, loss: 0.000210
+2019-01-18_21:47:33 - Epoch: 17, val_loss: 0.000209, loss: 0.000209
+2019-01-18_22:20:47 - Epoch: 18, val_loss: 0.000209, loss: 0.000209
+2019-01-18_22:51:16 - Epoch: 19, val_loss: 0.000207, loss: 0.000209
+2019-01-18_23:25:48 - Epoch: 20, val_loss: 0.000209, loss: 0.000208
+UNet2D_FCS_sc3_layer4x4x4_relu_filt16_reshfl_SNR20to100
+2019-01-23_11:27:25 - Epoch: 1, val_loss: 0.000258, loss: 0.000669
+2019-01-23_12:01:20 - Epoch: 2, val_loss: 0.000229, loss: 0.000244
+2019-01-23_12:38:54 - Epoch: 3, val_loss: 0.000220, loss: 0.000228
+2019-01-23_13:14:01 - Epoch: 4, val_loss: 0.000215, loss: 0.000218
+2019-01-23_13:49:57 - Epoch: 5, val_loss: 0.000212, loss: 0.000214
+2019-01-23_14:24:42 - Epoch: 6, val_loss: 0.000215, loss: 0.000212
+2019-01-23_14:59:53 - Epoch: 7, val_loss: 0.000209, loss: 0.000210
+UNet2D_FCS_sc3_layer4x4x4_relu_filt16_reshfl_SNR20to100_reshfl_SNR20to100_reshfl_SNR20to100
+2019-01-23_16:14:38 - Epoch: 1, val_loss: 0.000282, loss: 0.001543
+2019-01-23_16:49:03 - Epoch: 2, val_loss: 0.000254, loss: 0.000261
+2019-01-23_17:19:29 - Epoch: 3, val_loss: 0.000224, loss: 0.000234
+2019-01-23_17:51:59 - Epoch: 4, val_loss: 0.000215, loss: 0.000221
+2019-01-23_18:24:28 - Epoch: 5, val_loss: 0.000214, loss: 0.000216
+2019-01-23_18:56:08 - Epoch: 6, val_loss: 0.000213, loss: 0.000213
+2019-01-23_19:28:02 - Epoch: 7, val_loss: 0.000212, loss: 0.000211
+2019-01-23_20:02:39 - Epoch: 8, val_loss: 0.000212, loss: 0.000210
+2019-01-23_20:35:56 - Epoch: 9, val_loss: 0.000209, loss: 0.000209
+2019-01-23_21:07:31 - Epoch: 10, val_loss: 0.000207, loss: 0.000208
+2019-01-23_21:39:54 - Epoch: 11, val_loss: 0.000208, loss: 0.000208
+2019-01-23_22:11:49 - Epoch: 12, val_loss: 0.000207, loss: 0.000207
+2019-01-23_22:41:42 - Epoch: 13, val_loss: 0.000208, loss: 0.000207
+2019-01-23_23:13:19 - Epoch: 14, val_loss: 0.000207, loss: 0.000207
+2019-01-23_23:44:17 - Epoch: 15, val_loss: 0.000206, loss: 0.000206
+2019-01-24_00:14:56 - Epoch: 16, val_loss: 0.000206, loss: 0.000206
+2019-01-24_00:50:43 - Epoch: 17, val_loss: 0.000205, loss: 0.000206
+2019-01-24_01:22:30 - Epoch: 18, val_loss: 0.000207, loss: 0.000206
+2019-01-24_01:52:32 - Epoch: 19, val_loss: 0.000206, loss: 0.000206
+2019-01-24_02:24:16 - Epoch: 20, val_loss: 0.000206, loss: 0.000205
+UNet2D_FCS_sc3_layer4x4x4_relu_filt16_reshfl_SNR20to100
+2019-01-24_15:45:12 - Epoch: 1, val_loss: 0.000265, loss: 0.000814
+2019-01-24_16:18:27 - Epoch: 2, val_loss: 0.000243, loss: 0.000244
+2019-01-24_16:52:23 - Epoch: 3, val_loss: 0.000256, loss: 0.000226
+2019-01-24_17:25:58 - Epoch: 4, val_loss: 0.000226, loss: 0.000216
+2019-01-24_17:59:42 - Epoch: 5, val_loss: 0.000220, loss: 0.000212
+2019-01-24_18:35:55 - Epoch: 6, val_loss: 0.000209, loss: 0.000211
+2019-01-24_19:08:57 - Epoch: 7, val_loss: 0.000210, loss: 0.000209
+2019-01-24_19:38:46 - Epoch: 8, val_loss: 0.000208, loss: 0.000208
+2019-01-24_20:11:53 - Epoch: 9, val_loss: 0.000210, loss: 0.000208
+2019-01-24_20:45:55 - Epoch: 10, val_loss: 0.000210, loss: 0.000207
+2019-01-24_21:15:44 - Epoch: 11, val_loss: 0.000206, loss: 0.000207
+2019-01-24_21:48:47 - Epoch: 12, val_loss: 0.000205, loss: 0.000206
+2019-01-24_22:22:29 - Epoch: 13, val_loss: 0.000209, loss: 0.000206
+2019-01-24_22:54:43 - Epoch: 14, val_loss: 0.000207, loss: 0.000206
+2019-01-24_23:26:15 - Epoch: 15, val_loss: 0.000206, loss: 0.000206
+2019-01-24_23:56:33 - Epoch: 16, val_loss: 0.000208, loss: 0.000205
+2019-01-25_00:32:03 - Epoch: 17, val_loss: 0.000209, loss: 0.000205
+2019-01-25_01:09:20 - Epoch: 18, val_loss: 0.000205, loss: 0.000205
+2019-01-25_01:40:24 - Epoch: 19, val_loss: 0.000206, loss: 0.000205
+2019-01-25_02:13:35 - Epoch: 20, val_loss: 0.000204, loss: 0.000205
+UNet2D_FCS_sc3_layer4x4x4_relu_filt16_atrou_reshfl_SNR20to100
+2019-02-01_17:58:31 - Epoch: 1, val_loss: 0.000331, loss: 0.001518
+2019-02-01_18:37:25 - Epoch: 2, val_loss: 0.000241, loss: 0.000249
+2019-02-01_19:15:19 - Epoch: 3, val_loss: 0.000223, loss: 0.000230
+2019-02-01_19:56:01 - Epoch: 4, val_loss: 0.000211, loss: 0.000221
+2019-02-01_20:35:38 - Epoch: 5, val_loss: 0.000218, loss: 0.000215
+2019-02-01_21:12:05 - Epoch: 6, val_loss: 0.000208, loss: 0.000211
+2019-02-01_21:49:27 - Epoch: 7, val_loss: 0.000215, loss: 0.000210
+2019-02-01_22:26:48 - Epoch: 8, val_loss: 0.000215, loss: 0.000209
+2019-02-01_23:05:16 - Epoch: 9, val_loss: 0.000210, loss: 0.000208
+2019-02-01_23:41:49 - Epoch: 10, val_loss: 0.000206, loss: 0.000207
+2019-02-02_00:20:14 - Epoch: 11, val_loss: 0.000208, loss: 0.000207
+2019-02-02_00:59:44 - Epoch: 12, val_loss: 0.000206, loss: 0.000206
+2019-02-02_01:37:02 - Epoch: 13, val_loss: 0.000211, loss: 0.000206
+2019-02-02_02:14:35 - Epoch: 14, val_loss: 0.000208, loss: 0.000205
+2019-02-02_02:51:48 - Epoch: 15, val_loss: 0.000212, loss: 0.000205
+2019-02-02_03:29:28 - Epoch: 16, val_loss: 0.000209, loss: 0.000205
+2019-02-02_04:05:54 - Epoch: 17, val_loss: 0.000206, loss: 0.000205
+2019-02-02_04:44:20 - Epoch: 18, val_loss: 0.000206, loss: 0.000205
+2019-02-02_05:23:06 - Epoch: 19, val_loss: 0.000206, loss: 0.000204
+2019-02-02_06:00:12 - Epoch: 20, val_loss: 0.000204, loss: 0.000204
+DeconvNet2D_FCS_sc4_layer4x5x6x7_relu_growthRate12_atrou_reshfl_SNR20to100
+DeconvNet2D_FCS_sc3_layer4x5x6_relu_growthRate12_atrou_reshfl_SNR20to100
+DeconvNet2D_FCS_sc3_layer4x5x6_relu_growthRate12_reshfl_SNR20to100
+2019-02-04_18:01:10 - Epoch: 1, val_loss: 0.000261, loss: 0.000905
+2019-02-04_19:03:34 - Epoch: 2, val_loss: 0.000226, loss: 0.000244
+2019-02-04_20:03:19 - Epoch: 3, val_loss: 0.000220, loss: 0.000225
+2019-02-04_21:03:45 - Epoch: 4, val_loss: 0.000217, loss: 0.000218
+2019-02-04_22:04:34 - Epoch: 5, val_loss: 0.000210, loss: 0.000215
+2019-02-04_23:04:36 - Epoch: 6, val_loss: 0.000215, loss: 0.000213
+2019-02-05_00:06:41 - Epoch: 7, val_loss: 0.000210, loss: 0.000212
+2019-02-05_01:09:47 - Epoch: 8, val_loss: 0.000210, loss: 0.000211
+2019-02-05_02:11:54 - Epoch: 9, val_loss: 0.000210, loss: 0.000210
+2019-02-05_03:13:59 - Epoch: 10, val_loss: 0.000211, loss: 0.000210
+2019-02-05_04:16:04 - Epoch: 11, val_loss: 0.000216, loss: 0.000209
+2019-02-05_05:16:48 - Epoch: 12, val_loss: 0.000214, loss: 0.000208
+2019-02-05_06:17:38 - Epoch: 13, val_loss: 0.000216, loss: 0.000208
+2019-02-05_07:18:35 - Epoch: 14, val_loss: 0.000216, loss: 0.000209
+2019-02-05_08:18:04 - Epoch: 15, val_loss: 0.000213, loss: 0.000208
+2019-02-05_09:19:05 - Epoch: 16, val_loss: 0.000206, loss: 0.000207
+2019-02-05_10:19:17 - Epoch: 17, val_loss: 0.000227, loss: 0.000207
+2019-02-05_11:18:42 - Epoch: 18, val_loss: 0.000206, loss: 0.000207
+2019-02-05_12:20:43 - Epoch: 19, val_loss: 0.000206, loss: 0.000207
+2019-02-05_13:21:17 - Epoch: 20, val_loss: 0.000206, loss: 0.000207
+DeconvNet2D_FCS_sc3_layer4x5x6_relu_growthRate12_atrou_reshfl_SNR20to100
+DeconvNet2D_FCS_sc3_layer4x5x6_relu_growthRate12_atrou_reshfl_SNR20to100_reshfl_SNR20to100
+DeconvNet2D_FCS_sc3_layer4x5x6_relu_growthRate12_atrou_reshfl_SNR20to100_reshfl_SNR20to100_reshfl_SNR20to100
+DeconvNet2D_FCS_sc3_layer4x5x6_relu_growthRate12_atrou_reshfl_SNR20to100
+DeconvNet2D_FCS_sc3_layer4x5x6_relu_growthRate12_atrou_reshfl_SNR20to100
+DeconvNet2D_FCS_sc3_layer4x5x6_relu_growthRate12_atrou_reshfl_SNR20to100
+DeconvNet2D_FCS_sc3_layer4x5x6_relu_growthRate12_atrou_reshfl_SNR20to100_reshfl_SNR20to100
+2019-02-06_17:16:39 - Epoch: 1, val_loss: 0.000236, loss: 0.001304
+2019-02-06_19:36:20 - Epoch: 2, val_loss: 0.000251, loss: 0.000248
+2019-02-06_21:55:45 - Epoch: 3, val_loss: 0.000221, loss: 0.000222
+2019-02-07_00:14:17 - Epoch: 4, val_loss: 0.000249, loss: 0.000216
+2019-02-07_02:35:34 - Epoch: 5, val_loss: 0.000213, loss: 0.000214
+2019-02-07_04:55:31 - Epoch: 6, val_loss: 0.000209, loss: 0.000212
+2019-02-07_07:15:06 - Epoch: 7, val_loss: 0.000217, loss: 0.000211
+2019-02-07_09:34:56 - Epoch: 8, val_loss: 0.000225, loss: 0.000211
+2019-02-07_11:54:57 - Epoch: 9, val_loss: 0.000211, loss: 0.000210
+2019-02-07_14:13:04 - Epoch: 10, val_loss: 0.000211, loss: 0.000210
+2019-02-07_16:32:58 - Epoch: 11, val_loss: 0.000208, loss: 0.000209
+2019-02-07_18:55:00 - Epoch: 12, val_loss: 0.000209, loss: 0.000208
+2019-02-07_21:15:16 - Epoch: 13, val_loss: 0.000206, loss: 0.000208
+2019-02-07_23:35:37 - Epoch: 14, val_loss: 0.000209, loss: 0.000208
+2019-02-08_01:57:48 - Epoch: 15, val_loss: 0.000207, loss: 0.000208
+2019-02-08_04:18:55 - Epoch: 16, val_loss: 0.000209, loss: 0.000207
+2019-02-08_06:39:58 - Epoch: 17, val_loss: 0.000207, loss: 0.000207
+2019-02-08_09:01:02 - Epoch: 18, val_loss: 0.000247, loss: 0.000207
+2019-02-08_11:22:36 - Epoch: 19, val_loss: 0.000208, loss: 0.000207
+2019-02-08_13:42:57 - Epoch: 20, val_loss: 0.000206, loss: 0.000207
+DeconvNet2D_FCS_sc4_layer4x5x6x7_relu_growthRate12_reshfl_SNR20to100
+2019-02-09_11:43:21 - Epoch: 1, val_loss: 0.000253, loss: 0.001126
+2019-02-09_12:49:52 - Epoch: 2, val_loss: 0.000228, loss: 0.000248
+2019-02-09_13:56:34 - Epoch: 3, val_loss: 0.000250, loss: 0.000223
+2019-02-09_15:02:30 - Epoch: 4, val_loss: 0.000250, loss: 0.000218
+2019-02-09_16:09:24 - Epoch: 5, val_loss: 0.000223, loss: 0.000215
+2019-02-09_17:17:32 - Epoch: 6, val_loss: 0.000215, loss: 0.000213
+2019-02-09_18:23:06 - Epoch: 7, val_loss: 0.000210, loss: 0.000211
+2019-02-09_19:28:40 - Epoch: 8, val_loss: 0.000210, loss: 0.000210
+2019-02-09_20:36:03 - Epoch: 9, val_loss: 0.000208, loss: 0.000210
+2019-02-09_21:43:08 - Epoch: 10, val_loss: 0.000210, loss: 0.000209
+2019-02-09_22:50:04 - Epoch: 11, val_loss: 0.000213, loss: 0.000209
+2019-02-09_23:55:09 - Epoch: 12, val_loss: 0.000213, loss: 0.000208
+2019-02-10_01:01:22 - Epoch: 13, val_loss: 0.000215, loss: 0.000208
+2019-02-10_02:07:20 - Epoch: 14, val_loss: 0.000206, loss: 0.000208
+2019-02-10_03:13:54 - Epoch: 15, val_loss: 0.000207, loss: 0.000207
+2019-02-10_04:19:59 - Epoch: 16, val_loss: 0.000205, loss: 0.000207
+2019-02-10_05:25:52 - Epoch: 17, val_loss: 0.000211, loss: 0.000207
+2019-02-10_06:33:25 - Epoch: 18, val_loss: 0.000205, loss: 0.000206
+2019-02-10_07:41:07 - Epoch: 19, val_loss: 0.000209, loss: 0.000207
+2019-02-10_08:47:36 - Epoch: 20, val_loss: 0.000205, loss: 0.000206
+DeconvNet2D_FCS_sc4_layer4x5x6x7_swish_growthRate12_reshfl_SNR20to100
+2019-02-10_15:42:24 - Epoch: 1, val_loss: 0.000240, loss: 0.000633
+2019-02-10_16:49:54 - Epoch: 2, val_loss: 0.000219, loss: 0.000227
+2019-02-10_17:59:21 - Epoch: 3, val_loss: 0.000221, loss: 0.000216
+2019-02-10_19:08:11 - Epoch: 4, val_loss: 0.000250, loss: 0.000213
+2019-02-10_20:16:57 - Epoch: 5, val_loss: 0.000274, loss: 0.000211
+2019-02-10_21:25:27 - Epoch: 6, val_loss: 0.000209, loss: 0.000209
+2019-02-10_22:35:55 - Epoch: 7, val_loss: 0.000207, loss: 0.000209
+2019-02-10_23:44:34 - Epoch: 8, val_loss: 0.000245, loss: 0.000208
+2019-02-11_00:53:29 - Epoch: 9, val_loss: 0.000221, loss: 0.000207
+2019-02-11_02:04:25 - Epoch: 10, val_loss: 0.000245, loss: 0.000207
+2019-02-11_03:15:35 - Epoch: 11, val_loss: 0.000247, loss: 0.000206
+2019-02-11_04:24:52 - Epoch: 12, val_loss: 0.000275, loss: 0.000206
+2019-02-11_05:34:59 - Epoch: 13, val_loss: 0.000217, loss: 0.000207
+2019-02-11_06:44:31 - Epoch: 14, val_loss: 0.000206, loss: 0.000206
+2019-02-11_07:55:35 - Epoch: 15, val_loss: 0.000229, loss: 0.000206
+2019-02-11_09:04:22 - Epoch: 16, val_loss: 0.000205, loss: 0.000205
+2019-02-11_10:15:06 - Epoch: 17, val_loss: 0.000224, loss: 0.000205
+2019-02-11_11:25:08 - Epoch: 18, val_loss: 0.000209, loss: 0.000205
+2019-02-11_12:35:15 - Epoch: 19, val_loss: 0.000204, loss: 0.000206
+2019-02-11_13:44:09 - Epoch: 20, val_loss: 0.000205, loss: 0.000204
+DeconvNet2D_FCS_sc4_layer7x6x5x4_relu_growthRate12_reshfl_SNR20to100
+2019-02-11_16:40:17 - Epoch: 1, val_loss: 0.000318, loss: 0.000952
+2019-02-11_18:14:38 - Epoch: 2, val_loss: 0.000246, loss: 0.000248
+2019-02-11_19:49:35 - Epoch: 3, val_loss: 0.000227, loss: 0.000227
+2019-02-11_21:24:29 - Epoch: 4, val_loss: 0.000210, loss: 0.000221
+2019-02-11_22:58:19 - Epoch: 5, val_loss: 0.000212, loss: 0.000218
+2019-02-12_00:32:21 - Epoch: 6, val_loss: 0.000221, loss: 0.000216
+2019-02-12_02:08:12 - Epoch: 7, val_loss: 0.000208, loss: 0.000214
+2019-02-12_03:42:22 - Epoch: 8, val_loss: 0.000210, loss: 0.000213
+2019-02-12_05:17:22 - Epoch: 9, val_loss: 0.000215, loss: 0.000212
+2019-02-12_06:53:21 - Epoch: 10, val_loss: 0.000211, loss: 0.000212
+2019-02-12_08:27:26 - Epoch: 11, val_loss: 0.000209, loss: 0.000211
+2019-02-12_10:03:01 - Epoch: 12, val_loss: 0.000206, loss: 0.000211
+2019-02-12_11:39:09 - Epoch: 13, val_loss: 0.000210, loss: 0.000210
+2019-02-12_13:13:09 - Epoch: 14, val_loss: 0.000207, loss: 0.000209
+2019-02-12_14:48:54 - Epoch: 15, val_loss: 0.000205, loss: 0.000209
+2019-02-12_16:22:46 - Epoch: 16, val_loss: 0.000208, loss: 0.000209
+2019-02-12_17:57:32 - Epoch: 17, val_loss: 0.000206, loss: 0.000209
+2019-02-12_19:32:18 - Epoch: 18, val_loss: 0.000205, loss: 0.000208
+2019-02-12_21:07:47 - Epoch: 19, val_loss: 0.000210, loss: 0.000208
+2019-02-12_22:42:02 - Epoch: 20, val_loss: 0.000205, loss: 0.000207
+DeconvNet2D_FCS_sc4_layer5x5x5x5_relu_growthRate12_reshfl_SNR20to100
+2019-02-13_14:34:34 - Epoch: 1, val_loss: 0.000288, loss: 0.000892
+2019-02-13_15:44:58 - Epoch: 2, val_loss: 0.000230, loss: 0.000245
+2019-02-13_16:55:43 - Epoch: 3, val_loss: 0.000224, loss: 0.000224
+2019-02-13_18:05:32 - Epoch: 4, val_loss: 0.000213, loss: 0.000218
+2019-02-13_19:14:01 - Epoch: 5, val_loss: 0.000224, loss: 0.000215
+2019-02-13_20:24:06 - Epoch: 6, val_loss: 0.000214, loss: 0.000213
+2019-02-13_21:33:42 - Epoch: 7, val_loss: 0.000220, loss: 0.000212
+2019-02-13_22:44:05 - Epoch: 8, val_loss: 0.000207, loss: 0.000211
+2019-02-13_23:54:26 - Epoch: 9, val_loss: 0.000208, loss: 0.000210
+2019-02-14_01:05:19 - Epoch: 10, val_loss: 0.000207, loss: 0.000209
+2019-02-14_02:14:56 - Epoch: 11, val_loss: 0.000215, loss: 0.000209
+2019-02-14_03:27:34 - Epoch: 12, val_loss: 0.318251, loss: 0.000209
+2019-02-14_04:35:50 - Epoch: 13, val_loss: 0.000207, loss: 0.000209
+2019-02-14_05:44:28 - Epoch: 14, val_loss: 0.000207, loss: 0.000208
+2019-02-14_06:55:50 - Epoch: 15, val_loss: 0.000205, loss: 0.000207
+2019-02-14_08:05:08 - Epoch: 16, val_loss: 0.000219, loss: 0.000207
+2019-02-14_09:15:20 - Epoch: 17, val_loss: 0.000204, loss: 0.000207
+2019-02-14_10:28:00 - Epoch: 18, val_loss: 0.000206, loss: 0.000207
+2019-02-14_11:39:25 - Epoch: 19, val_loss: 0.000204, loss: 0.000206
+2019-02-14_13:15:37 - Epoch: 20, val_loss: 0.000208, loss: 0.000206
+DeconvNet2D_FCS_sc4_layer5x5x5x5_swish_growthRate12_reshfl_SNR20to100
+DeconvNet2D_FCS_sc4_layer5x5x5x5_swish_growthRate12_reshfl_SNR20to100
+2019-02-14_22:36:54 - Epoch: 1, val_loss: 0.000248, loss: 0.000903
+2019-02-15_00:16:45 - Epoch: 2, val_loss: 0.000226, loss: 0.000234
+2019-02-15_01:37:40 - Epoch: 3, val_loss: 0.000217, loss: 0.000219
+2019-02-15_02:57:48 - Epoch: 4, val_loss: 0.000222, loss: 0.000215
+2019-02-15_04:18:46 - Epoch: 5, val_loss: 0.000209, loss: 0.000212
+2019-02-15_05:39:53 - Epoch: 6, val_loss: 0.000222, loss: 0.000211
+2019-02-15_06:59:44 - Epoch: 7, val_loss: 0.000210, loss: 0.000210
+2019-02-15_08:18:56 - Epoch: 8, val_loss: 0.000207, loss: 0.000209
+2019-02-15_09:39:41 - Epoch: 9, val_loss: 0.000208, loss: 0.000208
+2019-02-15_11:00:32 - Epoch: 10, val_loss: 0.000208, loss: 0.000208
+2019-02-15_12:21:23 - Epoch: 11, val_loss: 0.000207, loss: 0.000207
+2019-02-15_13:42:44 - Epoch: 12, val_loss: 0.000206, loss: 0.000206
+2019-02-15_15:02:42 - Epoch: 13, val_loss: 0.000207, loss: 0.000206
+2019-02-15_16:21:46 - Epoch: 14, val_loss: 0.000215, loss: 0.000206
+2019-02-15_17:43:31 - Epoch: 15, val_loss: 0.000207, loss: 0.000206
+2019-02-15_20:08:17 - Epoch: 16, val_loss: 0.000211, loss: 0.000206
+2019-02-15_22:53:06 - Epoch: 17, val_loss: 0.000205, loss: 0.000205
+2019-02-16_01:37:10 - Epoch: 18, val_loss: 0.000211, loss: 0.000205
+2019-02-16_04:22:01 - Epoch: 19, val_loss: 0.000206, loss: 0.000205
+2019-02-16_07:08:48 - Epoch: 20, val_loss: 0.000205, loss: 0.000205

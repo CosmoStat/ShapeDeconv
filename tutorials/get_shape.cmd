@@ -1,0 +1,3 @@
+#! /bin/bash
+source /home/cben-ali/.bashrc
+/data/shapelens_v2/shapelens-CEA-master/bin/get_shapes_output -o /data/DeepDeconv/data/vsc_euclidpsfs/reshuffle/window/Gaussian_window_claire_0_weights_win.fits -p /data/DeepDeconv/data/gauss_fwhm0p07/starfield_image-000-0.fits -g 100 -s 96 -T /data/DeepDeconv/data/vsc_euclidpsfs/reshuffle/window/Gaussian_window_claire_0.fits /data/DeepDeconv/data/vsc_euclidpsfs/reshuffle/window/Gaussian_window_claire_0_ellipmesnewwin.fits

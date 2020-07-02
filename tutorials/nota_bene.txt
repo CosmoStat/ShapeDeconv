@@ -1,0 +1,1 @@
+Il préconisé dans les règles d'hygiène informatique de fermer toutes les sessions ouvertes sur le poste d'un tiers lorsque celles-ci ne sont plus utilisées.
