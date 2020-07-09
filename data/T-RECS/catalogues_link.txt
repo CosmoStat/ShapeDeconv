@@ -1,0 +1,4 @@
+directory link:
+http://130.79.128.5/ftp/VII/282/fits/
+
+file names: catalogue_AGNs_complete_deep.fits, catalogue_SFGs_complete_deep.fits
