@@ -16,8 +16,10 @@ import os
 # Dependency imports
 from absl import flags, app
 import numpy as np
+from scipy import fft
 import tensorflow as tf
 import cadmos_lib as cl
+import galflow as gf
 from galaxy2galaxy import problems
 
 # #flag example
@@ -54,16 +56,16 @@ flags.DEFINE_integer(
     'n_shearlet', default=3, help="Number of shearlets scales.")
 
 flags.DEFINE_integer(
-    'steps', default=100, help="Number of steps per epoch in the training.")
+    'steps', default=625, help="Number of steps per epoch in the training.")
 
 flags.DEFINE_integer(
-    'epochs', default=20, help="Number of epochs in the training.")
+    'epochs', default=10, help="Number of epochs in the training.")
 
 flags.DEFINE_integer(
     'growth_rate', default=12, help="Growth rate of the Dense Block.")
 
 flags.DEFINE_integer(
-    'batch_size', default=32, help="The batch size for training the UNET.")
+    'batch_size', default=128, help="The batch size for training the UNET.")
 
 flags.DEFINE_string(
     'activation_function',
@@ -76,99 +78,108 @@ flags.DEFINE_float(
 
 FLAGS = flags.FLAGS
 
-def pre_proc_unet(var1, var2, *args, long_var_name='hi', **kwargs):
-    r"""Summarize the function in one line.
+def ir2tf(imp_resp, shape):
+    
 
-    Several sentences providing an extended description. Refer to
-    variables using back-ticks, e.g. `var`.
+    dim = 2
+    # Zero padding and fill
+    irpadded = np.zeros(shape)
+    irpadded[tuple([slice(0, s) for s in imp_resp.shape])] = imp_resp
+    # Roll for zero convention of the fft to avoid the phase
+    # problem. Work with odd and even size.
+    for axis, axis_size in enumerate(imp_resp.shape):
+
+        irpadded = np.roll(irpadded,
+                           shift=-int(np.floor(axis_size / 2)),
+                           axis=axis)
+
+    return fft.rfftn(irpadded, axes=range(-dim, 0))
+
+def laplacian(shape):
+    
+    impr = np.zeros([3,3])
+    for dim in range(2):
+        idx = tuple([slice(1, 2)] * dim +
+                    [slice(None)] +
+                    [slice(1, 2)] * (1 - dim))
+        impr[idx] = np.array([-1.0,
+                              0.0,
+                              -1.0]).reshape([-1 if i == dim else 1
+                                              for i in range(2)])
+    impr[(slice(1, 2), ) * 2] = 4.0
+    return ir2tf(impr, shape), impr
+
+def laplacian_tf(shape):
+    return tf.convert_to_tensor(laplacian(shape)[0])
+
+def wiener_tf(image, psf, balance):
+    reg = laplacian_tf(image.shape)
+    if psf.shape != reg.shape:
+        trans_func = tf.signal.rfft2d(tf.signal.ifftshift(tf.cast(psf, 'float32')))
+    else:
+        trans_func = psf
+    
+    arg1 = tf.cast(tf.math.conj(trans_func), 'complex64')
+    arg2 = tf.dtypes.cast(tf.math.abs(trans_func),'complex64') ** 2
+    arg3 = balance * tf.dtypes.cast(tf.math.abs(laplacian_tf(image.shape)), 'complex64')**2
+    wiener_filter = arg1 / (arg2 + arg3)
+    
+    wiener_applied = wiener_filter * tf.signal.rfft2d(tf.cast(image, 'float32'))
+    
+    return wiener_applied, trans_func
+
+def pre_proc_unet(dico):
+    r"""Preprocess the data and apply the Tikhonoff filter on the input galaxy images.
+
+    This function takes the dictionnary of galaxy images and PSF for the input and
+    the target and returns a list containing 2 arrays: an array of galaxy images that
+    are the output of the Tikhonoff filter and an array of target galaxy images.
 
     Parameters
     ----------
-    var1 : array_like
+    dico : dictionnary
         Array_like means all those objects -- lists, nested lists, etc. --
         that can be converted to an array.  We can also refer to
         variables like `var1`.
-    var2 : int
-        The type above can either refer to an actual Python type
-        (e.g. ``int``), or describe the type of the variable in more
-        detail, e.g. ``(N,) ndarray`` or ``array_like``.
-    *args : iterable
-        Other arguments.
-    long_var_name : {'hi', 'ho'}, optional
-        Choices in brackets, default first when optional.
-    **kwargs : dict
-        Keyword arguments.
 
     Returns
     -------
-    type
-        Explanation of anonymous return value of type ``type``.
-    describe : type
-        Explanation of return value named `describe`.
-    out : type
-        Explanation of `out`.
-    type_without_description
-
-    Other Parameters
-    ----------------
-    only_seldom_used_keywords : type
-        Explanation
-    common_parameters_listed_above : type
-        Explanation
-
-    Raises
-    ------
-    BadException
-        Because you shouldn't have done that.
-
-    See Also
-    --------
-    numpy.array : Relationship (optional).
-    numpy.ndarray : Relationship (optional), which could be fairly long, in
-                    which case the line wraps here.
-    numpy.dot, numpy.linalg.norm, numpy.eye
-
-    Notes
-    -----
-    Notes about the implementation algorithm (if needed).
-
-    This can have multiple paragraphs.
-
-    You may include some math:
-
-    .. math:: X(e^{j\omega } ) = x(n)e^{ - j\omega n}
-
-    And even use a Greek symbol like :math:`\omega` inline.
-
-    References
-    ----------
-    Cite the relevant literature, e.g. [1]_.  You may also cite these
-    references in the notes section above.
-
-    .. [1] O. McNoleg, "The integration of GIS, remote sensing,
-       expert systems and adaptive co-kriging for environmental habitat
-       modelling of the Highland Haggis using object-oriented, fuzzy-logic
-       and neural-network techniques," Computers & Geosciences, vol. 22,
-       pp. 585-588, 1996.
-
-    Examples
-    --------
+    list
+        list containing 2 arrays: an array of galaxy images that are the output of the
+        Tikhonoff filter and an array of target galaxy images.
+    
+    Example
+    -------
     These are written in doctest format, and should illustrate how to
     use the function.
 
-    >>> a = [1, 2, 3]
-    >>> print([x + 3 for x in a])
-    [4, 5, 6]
-    >>> print("a\nb")
-    a
-    b
+    >>> from galaxy2galaxy import problems # to list avaible problems run problems.available()
+    >>> problem128 = problems.problem('attrs2img_cosmos_hst2euclide')
+    >>> dset = problem128.dataset(Modes.TRAIN, data_dir='attrs2img_cosmos_hst2euclide')
+    >>> dset = dset.map(pre_proc_unet)
     """
-    # After closing class docstring, there should be one blank line to
-    # separate following codes (according to PEP257).
-    # But for function, method and module, there should be no blank lines
-    # after closing the docstring.
-    pass
+    x_interpolant=tf.image.ResizeMethod.BICUBIC
+    # First, we interpolate the image on a finer grid
+    interp_factor = 2
+    Nx = 64
+    Ny = 64
+    dico['inputs'] = tf.image.resize(dico['inputs'],
+                    [Nx*interp_factor,
+                    Ny*interp_factor],
+                    method=x_interpolant)
+    # Since we lower the resolution of the image, we also scale the flux
+    # accordingly
+    dico['inputs'] = dico['inputs'] / interp_factor**2
     
+    balance = 10**(-2.16)  #best after grid search
+    dico['inputs'], dico['psf'] = wiener_tf(dico['inputs'][...,0], dico['psf'][...,0], balance)
+    dico['inputs'] = tf.expand_dims(dico['inputs'], axis=0)
+    dico['psf'] = tf.expand_dims(tf.cast(dico['psf'], 'complex64'), axis=0)
+    dico['inputs'] = gf.kconvolve(dico['inputs'], dico['psf'],zero_padding_factor=1,interp_factor=interp_factor)
+    dico['inputs'] = dico['inputs'][0,...]
+    
+    return dico['inputs'], dico['inputs2']
+
 
 def DenseBlock(n_layers, n_kernels, input_layer, activation_function='swish',
                axis_concat=3, concat_input=True):
@@ -335,6 +346,12 @@ def multi_window_metric(y_pred,y_true):
     """
     residual=y_pred-y_true
     shape_constraint=0
+    print("########################################################")
+    print("########################################################")
+    print("###################### GAMMA PSU_TENSOR SHAPES #################")
+    print(psu.shape)
+    print("########################################################")
+    print("########################################################")
     for i in range(6):
         for j in range(psu.shape[1]):
             shape_constraint+=FLAGS.gamma*mu[i,j]*\
@@ -409,6 +426,7 @@ def main(argv):
             # get shearlets filters and their adjoints
             shearlets,shearlets_adj = cl.get_shearlets(FLAGS.n_row,FLAGS.n_col
                                                        ,FLAGS.n_shearlet)
+            global mu, psu, psu_tensor
             # shealret adjoint of U, i.e Psi^{Star}(U)
             psu = np.array([cl.convolve_stack(ui,shearlets_adj) for ui in U])
             mu = cl.comp_mu(psu)
@@ -416,9 +434,10 @@ def main(argv):
             psu_tensor = tf.reshape(psu, [*psu.shape[:2],1,*psu.shape[2:],1])
 
     # DATA GENERATOR INITIALIZATION
-    problem128 = problems.problem('attrs2img_cosmos_psf_euclide')
     Modes = tf.estimator.ModeKeys
+    problem128 = problems.problem('attrs2img_cosmos_psf_euclide')
     dset = problem128.dataset(Modes.TRAIN, data_dir=FLAGS.data_dir)
+    dset = dset.repeat()
     dset = dset.map(pre_proc_unet)
     dset = dset.batch(FLAGS.batch_size)
     
@@ -500,7 +519,7 @@ def main(argv):
             metrics += [multi_window_metric] 
     model.compile(optimizer = tf.keras.optimizers.Adam(lr=1e-3)
                   , loss = tikho_loss, weighted_metrics=metrics)
-    
+    # Train model
     history = model.fit_generator(dset, steps_per_epoch=FLAGS.steps
                                   ,epochs=FLAGS.epochs)
     
