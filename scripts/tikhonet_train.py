@@ -416,7 +416,7 @@ def main(argv):
             psu_tensor = tf.reshape(psu, [*psu.shape[:2],1,*psu.shape[2:],1])
 
     # DATA GENERATOR INITIALIZATION
-    problem128 = problems.problem('attrs2img_cosmos_psf_euclide')
+    problem128 = problems.problem('attrs2img_cosmos_hs_t2_euclid')
     Modes = tf.estimator.ModeKeys
     dset = problem128.dataset(Modes.TRAIN, data_dir=FLAGS.data_dir)
     dset = dset.map(pre_proc_unet)
