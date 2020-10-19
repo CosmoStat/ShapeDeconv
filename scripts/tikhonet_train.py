@@ -44,10 +44,10 @@ flags.DEFINE_string(
     either 'None', 'single' or 'multi'.")
 
 flags.DEFINE_integer(
-    'n_row', default=96, help="Number of rows per image.")
+    'n_row', default=64, help="Number of rows per image.")
 
 flags.DEFINE_integer(
-    'n_col', default=96, help="Number of columns per image.")
+    'n_col', default=64, help="Number of columns per image.")
 
 flags.DEFINE_integer(
     'n_scale', default=4, help="Number of scales in the UNET.")
@@ -163,22 +163,22 @@ def pre_proc_unet(dico):
     interp_factor = 2
     Nx = 64
     Ny = 64
-    dico['inputs'] = tf.image.resize(dico['inputs'],
+    dico['inputs_euclid'] = tf.image.resize(dico['inputs'],
                     [Nx*interp_factor,
                     Ny*interp_factor],
                     method=x_interpolant)
     # Since we lower the resolution of the image, we also scale the flux
     # accordingly
-    dico['inputs'] = dico['inputs'] / interp_factor**2
+    dico['inputs_euclid'] = dico['inputs_euclid'] / interp_factor**2
     
     balance = 10**(-2.16)  #best after grid search
-    dico['inputs'], dico['psf'] = wiener_tf(dico['inputs'][...,0], dico['psf'][...,0], balance)
-    dico['inputs'] = tf.expand_dims(dico['inputs'], axis=0)
-    dico['psf'] = tf.expand_dims(tf.cast(dico['psf'], 'complex64'), axis=0)
-    dico['inputs'] = gf.kconvolve(dico['inputs'], dico['psf'],zero_padding_factor=1,interp_factor=interp_factor)
-    dico['inputs'] = dico['inputs'][0,...]
+    dico['inputs_tikho'], dico['psf_euclid'] = wiener_tf(dico['inputs_euclid'][...,0], dico['psf_euclid'][...,0], balance)
+    dico['inputs_tikho'] = tf.expand_dims(dico['inputs_tikho'], axis=0)
+    dico['psf_euclid'] = tf.expand_dims(tf.cast(dico['psf_euclid'], 'complex64'), axis=0)
+    dico['inputs_tikho'] = gf.kconvolve(dico['inputs_tikho'], dico['psf_euclid'],zero_padding_factor=1,interp_factor=interp_factor)
+    dico['inputs_tikho'] = dico['inputs_tikho'][0,...]
     
-    return dico['inputs'], dico['inputs2']
+    return dico['inputs_tikho'], dico['targets']
 
 
 def DenseBlock(n_layers, n_kernels, input_layer, activation_function='swish',
@@ -278,8 +278,8 @@ def single_window_metric(y_pred,y_true):
     Using the single window shape constraint as a metric in a basic Neural
     Netowrk.
     
-    >>> inputs = tf.keras.Input(shape=[96, 96, 1])
-    >>> window = tf.keras.Input((96, 96,1),name='window')
+    >>> inputs = tf.keras.Input(shape=[64, 64, 1])
+    >>> window = tf.keras.Input((64, 64,1),name='window')
     >>> weights = tf.keras.Input((6,1,1),name='weights')
     >>> net = tf.keras.layers.Conv2D(32, 3, padding='same')(inputs)
     >>> net = tf.keras.layers.Activation('relu')(net)
@@ -335,7 +335,7 @@ def multi_window_metric(y_pred,y_true):
     Using the single window shape constraint as a metric in a basic Neural
     Netowrk.
     
-    >>> inputs = tf.keras.Input(shape=[96, 96, 1])
+    >>> inputs = tf.keras.Input(shape=[64, 64, 1])
     >>> net = tf.keras.layers.Conv2D(32, 3, padding='same')(inputs)
     >>> net = tf.keras.layers.Activation('relu')(net)
     >>> net = tf.keras.layers.Conv2D(16, 3, padding='same')(net)
@@ -395,7 +395,7 @@ def tikho_loss(y_pred,y_true):
     -------
     Using `tikho_loss` as a custom loss in a basic Neural Netowrk.
     
-    >>> inputs = tf.keras.Input(shape=[96, 96, 1])
+    >>> inputs = tf.keras.Input(shape=[64, 64, 1])
     >>> net = tf.keras.layers.Conv2D(32, 3, padding='same')(inputs)
     >>> net = tf.keras.layers.Activation('relu')(net)
     >>> net = tf.keras.layers.Conv2D(16, 3, padding='same')(net)
@@ -435,7 +435,7 @@ def main(argv):
 
     # DATA GENERATOR INITIALIZATION
     Modes = tf.estimator.ModeKeys
-    problem128 = problems.problem('attrs2img_cosmos_psf_euclide')
+    problem128 = problems.problem('attrs2img_cosmos_hs_t2_euclid')
     dset = problem128.dataset(Modes.TRAIN, data_dir=FLAGS.data_dir)
     dset = dset.repeat()
     dset = dset.map(pre_proc_unet)
@@ -446,7 +446,7 @@ def main(argv):
     inputs = tf.keras.Input(shape=[FLAGS.n_row, FLAGS.n_col, 1]
                             , name='input_image')
     if FLAGS.shape_constraint=='single':
-        window = tf.keras.Input((96, 96,1),name='window')
+        window = tf.keras.Input((FLAGS.n_row, FLAGS.n_col,1),name='window')
         norm = tf.keras.Input((6,1,1),name='norm')
     
     #INPUT CONV
@@ -520,8 +520,7 @@ def main(argv):
     model.compile(optimizer = tf.keras.optimizers.Adam(lr=1e-3)
                   , loss = tikho_loss, weighted_metrics=metrics)
     # Train model
-    history = model.fit_generator(dset, steps_per_epoch=FLAGS.steps
-                                  ,epochs=FLAGS.epochs)
+    history = model.fit(dset, steps_per_epoch=FLAGS.steps,epochs=FLAGS.epochs)
     
     # Save model
     model_name = 'tikhonet_{0}-constraint_scales-{1}'\
