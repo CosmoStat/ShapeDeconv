@@ -1,0 +1,5 @@
+size_dist = seeing_distribution('seeing_distribution.npy')
+size_dist.get()
+out: 0.7044500778779725
+size_dist.get(2)
+out: array([0.7044500778779725, 0.7044500778779725])
