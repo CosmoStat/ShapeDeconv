@@ -1,0 +1,31 @@
+##### SLACK CONVERSATION 10/11/2020 #####
+Axel  3:12 PM
+En gros ça te retourne une taille avec une proba qui suit l'histogramme des vraie donnée
+
+
+
+
+
+3:13
+Tu peux donner une seed pour avoir toujours la même réalisation de taille
+3:14
+C'est que j'utilise pour mes simus
+
+Fadi  3:15 PM
+Ok c’est un échantillonneur de fwhm pour CFIS?
+:+1:
+1
+
+
+Axel  3:15 PM
+Si ça t'intéresse de construire un objet comme ça pour d'autre histogramme  take a look at: https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.rv_histogram.html
+
+Fadi  3:15 PM
+C’est beau
+
+Axel  3:15 PM
+Si tu veux refaire l'hitogramme tu demande 100000000 valeurs et tu devrais le retrouver
+3:16
+Un truc à savoir, aucune des valeurs retourné correspond à une mesure sur les vraie donné mais elles aurait pu l'être
+3:16
+Donc t'as aucune limitation tu peux demander autant que tu veux
