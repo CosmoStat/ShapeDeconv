@@ -435,7 +435,7 @@ def main(argv):
 
     # DATA GENERATOR INITIALIZATION
     Modes = tf.estimator.ModeKeys
-    problem128 = problems.problem('attrs2img_cosmos_hs_t2_euclid')
+    problem128 = problems.problem('attrs2img_cosmos_cfht2hst')
     dset = problem128.dataset(Modes.TRAIN, data_dir=FLAGS.data_dir)
     dset = dset.repeat()
     dset = dset.map(pre_proc_unet)

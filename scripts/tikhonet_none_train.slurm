@@ -22,4 +22,4 @@ export PYTHONPATH="$PYTHONPATH:$WORK/GitHub/score"
 
 cd $WORK/GitHub/ShapeDeconv/scripts
 
-python ./tikhonet_train.py --data_dir=/gpfswork/rech/xdy/uze68md/data/attrs2img_cosmos_hst2euclid/ --model_dir=/gpfswork/rech/xdy/uze68md/model_test/
+python ./tikhonet_train.py --data_dir=/gpfswork/rech/xdy/uze68md/data/attrs2img_cosmos_cfht2hst/ --model_dir=/gpfswork/rech/xdy/uze68md/model_cfht_noiseless/
