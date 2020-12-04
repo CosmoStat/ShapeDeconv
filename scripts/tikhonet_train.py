@@ -163,19 +163,19 @@ def pre_proc_unet(dico):
     interp_factor = 2
     Nx = 64
     Ny = 64
-    dico['inputs_euclid'] = tf.image.resize(dico['inputs'],
+    dico['inputs_cfht'] = tf.image.resize(dico['inputs'],
                     [Nx*interp_factor,
                     Ny*interp_factor],
                     method=x_interpolant)
     # Since we lower the resolution of the image, we also scale the flux
     # accordingly
-    dico['inputs_euclid'] = dico['inputs_euclid'] / interp_factor**2
+    dico['inputs_cfht'] = dico['inputs_cfht'] / interp_factor**2
     
     balance = 10**(-2.16)  #best after grid search
-    dico['inputs_tikho'], dico['psf_euclid'] = wiener_tf(dico['inputs_euclid'][...,0], dico['psf_euclid'][...,0], balance)
+    dico['inputs_tikho'], dico['psf_cfht'] = wiener_tf(dico['inputs_cfht'][...,0], dico['psf_cfht'][...,0], balance)
     dico['inputs_tikho'] = tf.expand_dims(dico['inputs_tikho'], axis=0)
-    dico['psf_euclid'] = tf.expand_dims(tf.cast(dico['psf_euclid'], 'complex64'), axis=0)
-    dico['inputs_tikho'] = gf.kconvolve(dico['inputs_tikho'], dico['psf_euclid'],zero_padding_factor=1,interp_factor=interp_factor)
+    dico['psf_cfht'] = tf.expand_dims(tf.cast(dico['psf_cfht'], 'complex64'), axis=0)
+    dico['inputs_tikho'] = gf.kconvolve(dico['inputs_tikho'], dico['psf_cfht'],zero_padding_factor=1,interp_factor=interp_factor)
     dico['inputs_tikho'] = dico['inputs_tikho'][0,...]
     
     return dico['inputs_tikho'], dico['targets']
@@ -529,8 +529,8 @@ def main(argv):
         model_name += '_gamma-{}'.format(FLAGS.gamma)
         if FLAGS.shape_constraint == 'multi':
             model += '_shearlet-{}'.format(FLAGS.n_shearlet)
-    model_name += '_steps-{0}_epochs-{1}_growth_rate-{2}_batch_size-{3}\
-                   _activationfunction-{4}'.format(FLAGS.steps,FLAGS.epochs
+    model_name += ('_steps-{0}_epochs-{1}_growth_rate-{2}_batch_size-{3}'+\
+                   '_activationfunction-{4}').format(FLAGS.steps,FLAGS.epochs
                                                    ,FLAGS.growth_rate
                                                    ,FLAGS.batch_size
                                                    ,FLAGS.activation_function)
