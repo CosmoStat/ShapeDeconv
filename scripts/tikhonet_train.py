@@ -158,8 +158,14 @@ def pre_proc_unet(dico):
     >>> dset = problem128.dataset(Modes.TRAIN, data_dir='attrs2img_cosmos_hst2euclide')
     >>> dset = dset.map(pre_proc_unet)
     """
+    # Friest, we add noise
+    # For the estimation of CFHT noise standard deviation check section 3 of:
+    # https://github.com/CosmoStat/ShapeDeconv/blob/master/data/CFHT/HST2CFHT.ipynb
+    sigma_cfht = 23.59
+    noise = tf.random_normal(shape=tf.shape(dico['inputs']), mean=0.0, stddev=sigma_cfht, dtype=tf.float32)
+    dico['inputs'] = dico['inputs'] + noise
+    # Second, we interpolate the image on a finer grid
     x_interpolant=tf.image.ResizeMethod.BICUBIC
-    # First, we interpolate the image on a finer grid
     interp_factor = 2
     Nx = 64
     Ny = 64

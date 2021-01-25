@@ -7,7 +7,7 @@
 # /!\ Caution, in the following line, "multithread" refers to hyperthreading.
 #SBATCH --hint=nomultithread         # we get physical cores not logical
 #SBATCH --distribution=block:block   # we pin the tasks on contiguous cores
-#SBATCH --time=1:00:00               # maximum execution time (HH:MM:SS)
+#SBATCH --time=2:00:00               # maximum execution time (HH:MM:SS)
 #SBATCH --output=tikho_train%j.out   # output file name
 #SBATCH --error=tikho_train%j.out    # error file name
 
@@ -22,4 +22,4 @@ export PYTHONPATH="$PYTHONPATH:$WORK/GitHub/score"
 
 cd $WORK/GitHub/ShapeDeconv/scripts
 
-python ./tikhonet_train.py --data_dir=/gpfswork/rech/xdy/uze68md/data/attrs2img_cosmos_cfht2hst/ --model_dir=/gpfswork/rech/xdy/uze68md/trained_models/model_cfht_noiseless/
+python ./tikhonet_train.py --data_dir=/gpfswork/rech/xdy/uze68md/data/attrs2img_cosmos_cfht2hst/ --model_dir=/gpfswork/rech/xdy/uze68md/trained_models/model_cfht/
