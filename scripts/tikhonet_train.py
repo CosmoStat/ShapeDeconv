@@ -112,28 +112,57 @@ def laplacian(shape):
 def laplacian_tf(shape):
     return tf.convert_to_tensor(laplacian(shape)[0])
 
-def wiener_tf(image, psf, balance):
-    reg = laplacian_tf(image.shape)
-    if psf.shape != reg.shape:
-        trans_func = tf.signal.rfft2d(tf.signal.ifftshift(tf.cast(psf, 'float32')))
-    else:
-        trans_func = psf
+def wiener_tf(image, psf, balance, laplacian=True):
+    r"""Applies Wiener filter to image.
+
+    This function takes an image in the direct space and its corresponding PSF in the
+    Fourier space and performs a deconvolution using the Wiener Filter.
+
+    Parameters
+    ----------
+    image   : 2D TensorFlow tensor
+        Image in the direct space.
+    psf     : 2D TensorFlow tensor
+        PSF in the Fourier space (or K space).
+    balance : scalar
+        Weight applied to regularization.
+    laplacian : boolean
+        If true the Laplacian regularization is used else the identity regularization 
+        is used.
+
+    Returns
+    -------
+    tuple
+        The first element is the filtered image in the Fourier space.
+        The second element is the PSF in the Fourier space (also know as the Transfer
+        Function).
+    """
+    trans_func = psf
+    if laplacian:
+        reg = laplacian_tf(image.shape)
+        if psf.shape != reg.shape:
+            trans_func = tf.signal.rfft2d(tf.signal.ifftshift(tf.cast(psf, 'float32')))
+        else:
+            trans_func = psf
     
     arg1 = tf.cast(tf.math.conj(trans_func), 'complex64')
     arg2 = tf.dtypes.cast(tf.math.abs(trans_func),'complex64') ** 2
-    arg3 = balance * tf.dtypes.cast(tf.math.abs(laplacian_tf(image.shape)), 'complex64')**2
+    arg3 = balance
+    if laplacian:
+        arg3 *= tf.dtypes.cast(tf.math.abs(laplacian_tf(image.shape)), 'complex64')**2
     wiener_filter = arg1 / (arg2 + arg3)
     
+    # Apply wiener in Foutier (or K) space
     wiener_applied = wiener_filter * tf.signal.rfft2d(tf.cast(image, 'float32'))
     
     return wiener_applied, trans_func
 
 def pre_proc_unet(dico):
-    r"""Preprocess the data and apply the Tikhonoff filter on the input galaxy images.
+    r"""Preprocess the data and apply the Tikhonov filter on the input galaxy images.
 
     This function takes the dictionnary of galaxy images and PSF for the input and
     the target and returns a list containing 2 arrays: an array of galaxy images that
-    are the output of the Tikhonoff filter and an array of target galaxy images.
+    are the output of the Tikhonov filter and an array of target galaxy images.
 
     Parameters
     ----------
@@ -146,8 +175,8 @@ def pre_proc_unet(dico):
     -------
     list
         list containing 2 arrays: an array of galaxy images that are the output of the
-        Tikhonoff filter and an array of target galaxy images.
-    
+        Tikhonov filter and an array of target galaxy images.
+
     Example
     -------
     These are written in doctest format, and should illustrate how to
@@ -158,12 +187,13 @@ def pre_proc_unet(dico):
     >>> dset = problem128.dataset(Modes.TRAIN, data_dir='attrs2img_cosmos_hst2euclide')
     >>> dset = dset.map(pre_proc_unet)
     """
-    # Friest, we add noise
+    # First, we add noise
     # For the estimation of CFHT noise standard deviation check section 3 of:
     # https://github.com/CosmoStat/ShapeDeconv/blob/master/data/CFHT/HST2CFHT.ipynb
     sigma_cfht = 23.59
     noise = tf.random_normal(shape=tf.shape(dico['inputs']), mean=0.0, stddev=sigma_cfht, dtype=tf.float32)
     dico['inputs'] = dico['inputs'] + noise
+
     # Second, we interpolate the image on a finer grid
     x_interpolant=tf.image.ResizeMethod.BICUBIC
     interp_factor = 2
@@ -176,14 +206,18 @@ def pre_proc_unet(dico):
     # Since we lower the resolution of the image, we also scale the flux
     # accordingly
     dico['inputs_cfht'] = dico['inputs_cfht'] / interp_factor**2
-    
-    balance = 10**(-2.16)  #best after grid search
-    dico['inputs_tikho'], dico['psf_cfht'] = wiener_tf(dico['inputs_cfht'][...,0], dico['psf_cfht'][...,0], balance)
+
+    balance = 9e-3  # determined using line search
+    dico['inputs_tikho'], _ = wiener_tf(dico['inputs_cfht'][...,0], dico['psf_cfht'][...,0], balance)
     dico['inputs_tikho'] = tf.expand_dims(dico['inputs_tikho'], axis=0)
-    dico['psf_cfht'] = tf.expand_dims(tf.cast(dico['psf_cfht'], 'complex64'), axis=0)
-    dico['inputs_tikho'] = gf.kconvolve(dico['inputs_tikho'], dico['psf_cfht'],zero_padding_factor=1,interp_factor=interp_factor)
+    psf_hst = tf.reshape(dico['psf_hst'], [dico['psf_hst'].shape[-1],*dico['psf_hst'].shape[:2]])
+    psf_hst = tf.cast(psf_hst, 'complex64')
+    # gf.kconvolve performs a convolution in the K (Fourier) space
+    # inputs are given in K space
+    # the output is in the direct space
+    dico['inputs_tikho'] = gf.kconvolve(dico['inputs_tikho'], psf_hst,zero_padding_factor=1,interp_factor=interp_factor)
     dico['inputs_tikho'] = dico['inputs_tikho'][0,...]
-    
+
     return dico['inputs_tikho'], dico['targets']
 
 
