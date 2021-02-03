@@ -386,14 +386,8 @@ def multi_window_metric(y_pred,y_true):
     """
     residual=y_pred-y_true
     shape_constraint=0
-    print("########################################################")
-    print("########################################################")
-    print("###################### GAMMA PSU_TENSOR SHAPES #################")
-    print(psu.shape)
-    print("########################################################")
-    print("########################################################")
     for i in range(6):
-        for j in range(psu.shape[1]):
+        for j in range(psu_tensor.shape[1]):
             shape_constraint+=FLAGS.gamma*mu[i,j]*\
             tf.keras.backend.square(
                 tf.keras.backend.sum(residual*psu_tensor[i,j],axis=(1,2,3)))/2.
@@ -471,7 +465,9 @@ def main(argv):
             psu = np.array([cl.convolve_stack(ui,shearlets_adj) for ui in U])
             mu = cl.comp_mu(psu)
             mu = tf.reshape(mu, [*mu.shape])
+            mu = tf.cast(mu, dtype=tf.float32)
             psu_tensor = tf.reshape(psu, [*psu.shape[:2],1,*psu.shape[2:],1])
+            psu_tensor = tf.cast(psu_tensor, dtype=tf.float32)
 
     # DATA GENERATOR INITIALIZATION
     Modes = tf.estimator.ModeKeys
