@@ -564,7 +564,7 @@ def main(argv):
     if FLAGS.shape_constraint != 'None':
         model_name += '_gamma-{}'.format(FLAGS.gamma)
         if FLAGS.shape_constraint == 'multi':
-            model += '_shearlet-{}'.format(FLAGS.n_shearlet)
+            model_name += '_shearlet-{}'.format(FLAGS.n_shearlet)
     model_name += ('_steps-{0}_epochs-{1}_growth_rate-{2}_batch_size-{3}'+\
                    '_activationfunction-{4}').format(FLAGS.steps,FLAGS.epochs
                                                    ,FLAGS.growth_rate
