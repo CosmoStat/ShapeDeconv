@@ -216,7 +216,9 @@ def pre_proc_unet(dico):
     # inputs are given in K space
     # the output is in the direct space
     dico['inputs_tikho'] = gf.kconvolve(dico['inputs_tikho'], psf_hst,zero_padding_factor=1,interp_factor=interp_factor)
-    dico['inputs_tikho'] = dico['inputs_tikho'][0,...]
+    # Normalize the Unet inputs to improve the training
+    norm_factor = 4e3
+    dico['inputs_tikho'] = dico['inputs_tikho'][0,...]/norm_factor
 
     return dico['inputs_tikho'], dico['targets']
 
