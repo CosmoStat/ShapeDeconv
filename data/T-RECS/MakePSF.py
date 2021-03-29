@@ -355,9 +355,10 @@ class UVW(object):
     """
     """
 
-    def __init__(self, times, radioarray, freqs=None):
+    def __init__(self, radioarray, freqs=None):
         self.bsl_xyz = None
-        self.times = times
+        #self.times = times
+
         self.freqs = freqs
         # Meaning ?
         self._radioarray = radioarray
@@ -389,26 +390,6 @@ class UVW(object):
         self.bsl = xyz[np.tril_indices(m)]
         self._ants = m
         return
-
-
-    @property
-    def times(self):
-        """ Times at which the UVW must be computed.
-            :setter: Times
-            
-            :getter: Times
-            
-            :type: :class:`~astropy.time.Time`
-        """
-        return self._times
-    @times.setter
-    def times(self, t):
-        if not isinstance(t, Time):
-            raise TypeError(
-                'times must be a Time instance.'
-            )
-        self._times = t
-        return    
 
 
     @property
@@ -463,7 +444,82 @@ class UVW(object):
 
     # --------------------------------------------------------- #
     # ------------------------ Methods ------------------------ #
-    def compute(self, phase_center=None):
+    def compute(self,ha,dec):
+        r""" Compute the UVW at a given ``phase_center`` for all
+            the :attr:`~nenupy.crosslet.uvw.UVW.times` and baselines
+            formed by :attr:`~nenupy.crosslet.uvw.UVW.mas`.
+            :param phase_center: Observation phase center. If
+                ``None``, local zenith is considered as phase
+                center for all :attr:`~nenupy.crosslet.uvw.UVW.times`.
+            :type phase_center: :class:`~astropy.coordinates.SkyCoord`
+            UVW are computed such as:
+            .. math::
+                \pmatrix{
+                    u \\
+                    v \\
+                    w
+                } =
+                \pmatrix{
+                    \sin(h) & \cos(h) & 0\\
+                    -\sin(\delta) \cos(h) & \sin(\delta) \sin(h) & \cos(\delta)\\
+                    \cos(\delta)\cos(h) & -\cos(\delta) \sin(h) & \sin(\delta)
+                }
+                \pmatrix{
+                    \Delta x\\
+                    \Delta y\\
+                    \Delta z
+                }
+            :math:`u`, :math:`v`, :math:`w` are in meters. :math:`h`
+            is the hour angle (see :func:`~nenupy.astro.astro.lha`)
+            at which the phase center is observed, :math:`\delta`
+            is the phase center's declination, :math:`(\Delta x,
+            \Delta y, \Delta z)` are the baselines projections
+            with the convention of :math:`x` to the South, :math:`y`
+            to the East and :math:`z` to :math:`\delta = 90` deg.
+            Result of the computation are stored as a :class:`~numpy.ndarray`
+            in :attr:`~nenupy.crosslet.uvw.UVW.uvw` whose shape is
+            (times, cross-correlations, 3), 3 being :math:`(u, v, w)`.
+            """
+
+        # Transformations
+        self._uvw = np.zeros(
+            (
+                ha.size,
+                self.bsl.shape[0],
+                3
+            )
+        )
+        # print('RAS', self._uvw.shape)
+        # print('RAS', self.bsl.shape)
+
+        xyz = np.array(self.bsl).T
+        # rot = np.radians(-90) # x to the south, y to the east
+        # rotation = np.array(
+        #     [
+        #         [ np.cos(rot), np.sin(rot), 0],
+        #         [-np.sin(rot), np.cos(rot), 0],
+        #         [ 0,           0,           1]
+        #     ]
+        # )
+        self._ha=ha
+        for i in range(self._ha.size):
+            sr = np.sin(ha[i])
+            cr = np.cos(ha[i])
+            sd = np.sin(dec)
+            cd = np.cos(dec)
+            rot_uvw = np.array([
+                [    sr,     cr,  0],
+                [-sd*cr,  sd*sr, cd],
+                [ cd*cr, -cd*sr, sd]
+            ])
+            # self.uvw[i, ...] = - np.dot(
+            #     np.dot(rot_uvw, xyz).T,
+            #     rotation
+            # )
+            self._uvw[i, ...] = - np.dot(rot_uvw, xyz).T
+        return
+
+    def compute2(self, phase_center=None):
         r""" Compute the UVW at a given ``phase_center`` for all
             the :attr:`~nenupy.crosslet.uvw.UVW.times` and baselines
             formed by :attr:`~nenupy.crosslet.uvw.UVW.mas`.
@@ -575,7 +631,7 @@ class UVW(object):
             # )
             self._uvw[i, ...] = - np.dot(rot_uvw, xyz).T
         return
-
+    
 
 # ============================================================= #
 
@@ -907,7 +963,102 @@ def grid_ifft2(uvw, Nx, Ny, convolution_filter):
     psf[:,:] = np.fft.fftshift(np.fft.ifft2(np.fft.ifftshift(sampling_regular[:,:])))
     return psf,sampling_regular
 
+def RandomPointing(N,Elevmin=0.,Obsmin=2):
+    lat=MeerKATarr.Loc.lat.value
+    
+    deltaDec=0.5 #in degrees
+    deltaHA=0.1 #in hours
+    tabDec=np.arange(-90.,90.,deltaDec)
+    tabHA=np.arange(-12,12,deltaHA)
+
+    tabtabDec,tabtabHA=np.meshgrid(tabDec,tabHA)
+    elev=np.degrees(np.arcsin(np.cos(np.radians(tabtabHA*15.))*np.cos(np.radians(tabtabDec))*np.cos(np.radians(lat))+np.sin(np.radians(tabtabDec))*np.sin(np.radians(lat))))
+    elev2=elev.copy()*np.NaN
+    mask=np.where(elev>Elevmin)
+
+    elev2[mask]=elev[mask]
+
+    Nelev=len(tabDec)
+
+    tabHAmax=np.zeros(Nelev)
+    tabHAmin=np.zeros(Nelev)
+
+    for i in range(Nelev):
+        if np.all(np.isnan(elev2[:,i])):
+        #print('Badline %d'%i)
+            continue
+        tmpmin=np.where(elev2[:,i] == np.nanmin(elev2[:,i]))
+        tmpmax=np.where(elev2[:,i] == np.nanmax(elev2[:,i]))
+        tmpHAmax=tmpmin[0][0]
+        tmpHAmin=tmpmax[0][0]
+        tabHAmin[i]=tmpHAmin
+        tabHAmax[i]=tmpHAmax
+
+        if len(tmpmin[0])==2:
+            tabwidth[i]=(tmpmin[0][1]-tmpmin[0][0])
+        
+    SelectHA=tabHA[tabHAmax.astype(int)][0:-61]
+    wloc=np.where(np.abs(SelectHA) >=Obsmin)
+    d=wloc[0][-1]
+    DEC_upperlimits=tabDec[d]
+    # draw DEC
+    tabDECsources=np.random.rand(N)*(DEC_upperlimits+90)-90
+
+    tabHAstart=np.zeros(N)
+    for i in range(N):
+        locdec=tabDec.flat[np.abs(tabDec - tabDECsources[i]).argmin()]
+        tmpHAstart=np.random.rand()*(tabHAmax[locdec.astype(int)]-Obsmin-tabHAmin[locdec.astype(int)])+tabHAmin[locdec.astype(int)]
+        tabHAstart[i]=tmpHAstart
+
+    return tabDECsources,tabHAstart
+
+
+def compute(N,Npix,pixelscale,Obslength=2.,Timedelta=300,Elevmin=0,F=1420):
+    
+    FOV=pixelscale*Npix/3600*1.0 # Desired Field of View of the image (in degrees) ===> gives size of pixel on the sky. Should be compatible with galaxy size range in degrees.
+
+    tabDEC,tabHAstart=RandomPointing(N,Elevmin,Obsmin=Obslength)
+    tabPSFList=[]
+    tabSamplingList=[]
+    Ndates=Obslength*3600./Timedelta  #Timedelta in seconds
+    uvw=UVW(MeerKATarr.Array,F) # setting times, array and frequency
+
+    for icase in range(N):
+        tmptabHA=np.radians((np.arange(Ndates)*Timedelta*1./3600+tabHAstart[icase])*15.)
+        tmpdec=np.radians(tabDEC[icase])
+        #print(np.degrees(tmptabHA))
+        print(tmpdec)
+        uvw.compute(tmptabHA,tmpdec) # computing uv coverage from pointing
+        tmpimg=Imager(uvw.uvw[...,0:2],fov=FOV) # preparing the imager
+        tmpPSF,tmpSampling=tmpimg.make_psf(npix=Npix,freq=F)  # gridding
+        tabPSFList.append(tmpPSF)
+        tabSamplingList.append(tmpSampling)
+        del tmpimg
+
+    del uvw
+        
+    #Pointing_RA=5.4     # Right ascension in degrees. (15° = 1h of RA)
+    #Pointing_DEC=-30.83 # Declination in degrees.
+    #Pointing=SkyCoord(Pointing_RA,Pointing_DEC,unit='deg') # generating pointing object
+
+# Time settings
+    #Obs_start='2020-10-05T20:00:00' # in Universal Time (UT)
+    #Obs_end='2020-10-05T20:05:00'
+    #tstart=Time(Obs_start,format='isot',scale='utc')
+    #tend=Time(Obs_end,format='isot',scale='utc')
+
+# Time intervals and time integration
+    #delta_t=300. # integration time per uv component (small will increase computing time for long observations)
+    #tstep=TimeDelta(delta_t,format='sec') # using convenient time object
+    #Ndates=round(((tend-tstart)/tstep).value) # number of time steps
+    #timetab=Time([tstart+i*tstep for i in range(int(Ndates))])
+    
+ # Setting 
+    
+    
+    return tabPSFList,tabSamplingList,tabDEC,tabHAstart
 
 if __name__ == '__main__':
+
     sys.exit(main())
 
