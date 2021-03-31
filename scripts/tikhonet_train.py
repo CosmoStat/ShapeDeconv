@@ -193,6 +193,10 @@ def pre_proc_unet(dico):
     sigma_cfht = 23.59
     noise = tf.random_normal(shape=tf.shape(dico['inputs']), mean=0.0, stddev=sigma_cfht, dtype=tf.float32)
     dico['inputs'] = dico['inputs'] + noise
+    # Normalize images to improve the training
+    norm_factor = 4e3
+    dico['inputs'] = dico['inputs']/norm_factor
+    dico['targets'] = dico['targets']/norm_factor
 
     # Second, we interpolate the image on a finer grid
     x_interpolant=tf.image.ResizeMethod.BICUBIC
@@ -216,9 +220,7 @@ def pre_proc_unet(dico):
     # inputs are given in K space
     # the output is in the direct space
     dico['inputs_tikho'] = gf.kconvolve(dico['inputs_tikho'], psf_hst,zero_padding_factor=1,interp_factor=interp_factor)
-    # Normalize the Unet inputs to improve the training
-    norm_factor = 4e3
-    dico['inputs_tikho'] = dico['inputs_tikho'][0,...]/norm_factor
+    dico['inputs_tikho'] = dico['inputs_tikho'][0,...]
 
     return dico['inputs_tikho'], dico['targets']
 
