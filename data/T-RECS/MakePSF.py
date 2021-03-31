@@ -768,8 +768,8 @@ class Imager(UVW):
 
         cell_size_l = cell_size_m = np.rad2deg((1 / (2 * max_uv.value))) # cell size on the sky depends on max uv = a.k.a. angular resolution (IN DEGREES)
 
-        Nx = np.max([int(np.round(self.fov / cell_size_l)),npix]) # guessing the number of pixels from fov / resolution # FOV IN DEGREES
-        Ny = np.max([int(np.round(self.fov / cell_size_m)),npix])
+        Nx = npix//2 #np.max([int(np.round(self.fov / cell_size_l)),npix//2]) # guessing the number of pixels from fov / resolution # FOV IN DEGREES
+        Ny = npix//2 #np.max([int(np.round(self.fov / cell_size_m)),npix//2])
         
         uvwscaled=np.copy(uvw[...,0:2])
         uvwscaled[...,0]*=np.deg2rad(cell_size_l*Nx) # scaling the uv values to match
