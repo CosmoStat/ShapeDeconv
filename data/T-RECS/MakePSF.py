@@ -502,12 +502,24 @@ class UVW(object):
         #     ]
         # )
         self._ha=ha
-        for i in range(self._ha.size):
-            sr = np.sin(ha[i])
-            cr = np.cos(ha[i])
+        if self._ha.size ==1:
+            sr = np.sin(ha)
+            cr = np.cos(ha)
             sd = np.sin(dec)
             cd = np.cos(dec)
             rot_uvw = np.array([
+                [    sr,     cr,  0],
+                [-sd*cr,  sd*sr, cd],
+                [ cd*cr, -cd*sr, sd]
+            ])
+            self._uvw[0, ...] = - np.dot(rot_uvw, xyz).T
+        else:
+            for i in range(self._ha.size):
+                sr = np.sin(ha[i])
+                cr = np.cos(ha[i])
+                sd = np.sin(dec)
+                cd = np.cos(dec)
+                rot_uvw = np.array([
                 [    sr,     cr,  0],
                 [-sd*cr,  sd*sr, cd],
                 [ cd*cr, -cd*sr, sd]
@@ -516,7 +528,9 @@ class UVW(object):
             #     np.dot(rot_uvw, xyz).T,
             #     rotation
             # )
-            self._uvw[i, ...] = - np.dot(rot_uvw, xyz).T
+                self._uvw[i, ...] = - np.dot(rot_uvw, xyz).T
+
+                
         return
 
     def compute2(self, phase_center=None):
@@ -754,8 +768,8 @@ class Imager(UVW):
 
         cell_size_l = cell_size_m = np.rad2deg((1 / (2 * max_uv.value))) # cell size on the sky depends on max uv = a.k.a. angular resolution (IN DEGREES)
 
-        Nx = int(np.round(self.fov / cell_size_l)) # guessing the number of pixels from fov / resolution # FOV IN DEGREES
-        Ny = int(np.round(self.fov / cell_size_m))
+        Nx = npix//2 #np.max([int(np.round(self.fov / cell_size_l)),npix//2]) # guessing the number of pixels from fov / resolution # FOV IN DEGREES
+        Ny = npix//2 #np.max([int(np.round(self.fov / cell_size_m)),npix//2])
         
         uvwscaled=np.copy(uvw[...,0:2])
         uvwscaled[...,0]*=np.deg2rad(cell_size_l*Nx) # scaling the uv values to match
@@ -1013,7 +1027,7 @@ def RandomPointing(N,Elevmin=0.,Obsmin=2):
     return tabDECsources,tabHAstart
 
 
-def compute(N,Npix,pixelscale,Obslength=2.,Timedelta=300,Elevmin=0,F=1420):
+def compute(N,Npix,pixelscale,Obslength=2.,Timedelta=300,Elevmin=0,F=1420,split=False):
     
     FOV=pixelscale*Npix/3600*1.0 # Desired Field of View of the image (in degrees) ===> gives size of pixel on the sky. Should be compatible with galaxy size range in degrees.
 
@@ -1024,17 +1038,34 @@ def compute(N,Npix,pixelscale,Obslength=2.,Timedelta=300,Elevmin=0,F=1420):
     uvw=UVW(MeerKATarr.Array,F) # setting times, array and frequency
 
     for icase in range(N):
-        tmptabHA=np.radians((np.arange(Ndates)*Timedelta*1./3600+tabHAstart[icase])*15.)
         tmpdec=np.radians(tabDEC[icase])
-        #print(np.degrees(tmptabHA))
-        print(tmpdec)
-        uvw.compute(tmptabHA,tmpdec) # computing uv coverage from pointing
-        tmpimg=Imager(uvw.uvw[...,0:2],fov=FOV) # preparing the imager
-        tmpPSF,tmpSampling=tmpimg.make_psf(npix=Npix,freq=F)  # gridding
-        tabPSFList.append(tmpPSF)
-        tabSamplingList.append(tmpSampling)
-        del tmpimg
 
+        if split == False:
+            tmptabHA=np.radians((np.arange(Ndates)*Timedelta*1./3600+tabHAstart[icase])*15.)
+            uvw.compute(tmptabHA,tmpdec) # computing uv coverage from pointing
+            tmpimg=Imager(uvw.uvw[...,0:2],fov=FOV) # preparing the imager
+            tmpPSF,tmpSampling=tmpimg.make_psf(npix=Npix,freq=F)  # gridding
+            tabPSFList.append(tmpPSF)
+            tabSamplingList.append(tmpSampling)
+            del tmpimg
+
+        else:
+            tabPSF=[]
+            tabSampling=[]
+            for idate in range(int(Ndates)):
+                tmptabHA=np.radians((idate*Timedelta*1./3600+tabHAstart[icase])*15.)
+                uvw.compute(tmptabHA,tmpdec) # computing uv coverage from pointing
+                tmpimg=Imager(uvw.uvw[...,0:2],fov=FOV) # preparing the imager
+                tmpPSF,tmpSampling=tmpimg.make_psf(npix=Npix,freq=F)  # gridding
+                tabPSF.append(tmpPSF)
+                tabSampling.append(tmpSampling)
+                
+            tabPSFList.append(tabPSF)
+            tabSamplingList.append(tabSampling)
+                
+        #print(np.degrees(tmptabHA))
+        #print(tmpdec)
+    del tmpimg
     del uvw
         
     #Pointing_RA=5.4     # Right ascension in degrees. (15° = 1h of RA)
