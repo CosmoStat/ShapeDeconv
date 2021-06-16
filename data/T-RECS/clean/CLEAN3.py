@@ -17,7 +17,7 @@ def hogbom(dirtyImg, psfImg, gain, niter, fthresh):
     while np.max(residImg) > fthresh and i < niter:
         lmax, mmax = np.unravel_index(residImg.argmax(), residImg.shape) #get pixel position of maximum value
         fmax = residImg[lmax, mmax] #flux value of maximum pixel
-        print('iter %i, (l,m):(%i, %i), flux: %f'%(i, lmax, mmax, fmax))
+        #print('iter %i, (l,m):(%i, %i), flux: %f'%(i, lmax, mmax, fmax))
         residImg = subtractPSF(residImg, psfImg, lmax, mmax, fmax, gain)
         skyModellist.append([lmax, mmax, gain*fmax])
         i += 1
@@ -37,13 +37,13 @@ def gauss2D_OLD(x, y, amp, meanx, meany, sigmax, sigmay):
     
     return amp * np.exp( gx + gy)
 
-def gauss2D(x, y, amp, meanx, meany, sigmax, sigmay, e1, e2):
+def gauss2D(x, y, amp, meanx, meany, sigma, e1, e2):
     """2D Gaussian Function"""
     xc = x-meanx
     yc = y-meany
     xe = (1-e1/2)*xc - e2/2*yc
     ye = (1+e1/2)*yc - e2/2*xc
-    expo = np.exp(-(xe ** 2 / (2 * sigmax ** 2) + ye ** 2 / (2 * sigmay ** 2)))
+    expo = np.exp(-(xe ** 2 + ye **2) / (2 * sigma ** 2))
     return amp * expo
 
 def err(p, xx, yy, data):
@@ -54,7 +54,7 @@ def idealPSF(psfImg):
     """Determine the ideal PSF size based on the observing PSF doing a simple 2D Gaussian least-squares fit"""
     xx, yy = np.meshgrid(np.arange(0, psfImg.shape[0]), np.arange(0, psfImg.shape[1]))
     # Initial estimate: PSF should be amplitude 1, and usually imaging over sample the PSF by 3-5 pixels
-    params0 = 1., psfImg.shape[0]/2., psfImg.shape[1]/2., 3., 3., 0., 0.
+    params0 = 1., psfImg.shape[0]/2., psfImg.shape[1]/2., 3., 0., 0.
     params, pcov, infoDict, errmsg, sucess = optimize.leastsq(err, params0, \
                             args=(xx.flatten(), yy.flatten(), psfImg.flatten()), full_output=1)
     #fwhm = [2.*np.sqrt(2.*np.log(2.)) * params[3], 2.*np.sqrt(2.*np.log(2.)) * params[4]]
@@ -69,7 +69,7 @@ def restoreImg(skyModel, residImg, params):
     #generate an ideal PSF image
     psfImg = np.zeros_like(residImg)
     xx, yy = np.meshgrid(np.arange(0, psfImg.shape[0]), np.arange(0, psfImg.shape[1]))
-    psfImg = gauss2D(xx, yy, params[0], params[1], params[2], params[3], params[4], params[5], params[6])
+    psfImg = gauss2D(xx, yy, params[0], params[1], params[2], params[3], params[4], params[5])
     
     #convolve ideal PSF with model image
     sampFunc = np.fft.fft2(psfImg) #sampling function
