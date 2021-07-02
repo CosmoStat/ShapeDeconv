@@ -82,6 +82,7 @@ mu = cl.comp_mu(psu)
 # set galaxies and psfs
 gals_obs = batch['inputs'][0*768:1*768]
 psfs = batch['psf'][0*768:1*768]
+tikhos = batch['inputs_tikho'][0*768:1*768]
 
 # Initiate instance of score
 # set the value of gamma
@@ -93,15 +94,15 @@ g1 = score(gamma=gamma,rip=False,verbose=False)
 #loop
 sol_g1 = []
 i=1
-for obs, psf in zip(gals_obs,psfs):
+for obs, psf, tikho in zip(gals_obs,psfs,tikhos):
     #compute thresholds
     thresholds = estimate_thresholds(obs,psf)
     #deconvolve
-    g1.deconvolve(obs=obs,psf=psf,thresholds=thresholds)
+    g1.deconvolve(obs=obs,psf=psf,thresholds=thresholds,first_guess=tikho)
     sol_g1 += [g1.solution]
     if i%10 == 0:
         print(i)
     i += 1
 
-filename = data_path + 'score_radio_g1_1'
+filename = data_path + 'score_radio_tikho_g1_1'
 np.save(filename,np.array(sol_g1))

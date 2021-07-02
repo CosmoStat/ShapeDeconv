@@ -20,6 +20,6 @@ set -x
 export PYTHONPATH="$PYTHONPATH:$WORK/GitHub/alpha-transform"
 export PYTHONPATH="$PYTHONPATH:$WORK/GitHub/score"
 
-cd $WORK/GitHub/ShapeDeconv/scripts
+cd $WORK/GitHub/ShapeDeconv/scripts/score/score_radio_g0
 
 python ./score_radio_g0_3.py
