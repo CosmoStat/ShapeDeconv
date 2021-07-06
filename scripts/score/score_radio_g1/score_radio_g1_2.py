@@ -104,5 +104,5 @@ for obs, psf, tikho in zip(gals_obs,psfs,tikhos):
         print(i)
     i += 1
 
-filename = data_path + 'score_radio_g1_2'
+filename = data_path + 'score_radio_tikho_g1_2'
 np.save(filename,np.array(sol_g1))
